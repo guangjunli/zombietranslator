@@ -15,21 +15,12 @@ define(['ZombieTranslator', 'Rule', 'Replacer'], function(ZombieTranslator, Rule
 
 	// 3. the starts of sentences are capitalised (the "start of a sentence" is any occurrence of
 	//   ".!?", followed by a space, followed by a letter.)
-	// http://stackoverflow.com/questions/6142922/replace-a-regex-capture-group-with-uppercase-in-javascript
-
 	this.translator.addRule(
 	    new Rule('rule #3, the starts of sentences are capitalised',
 		     new Replacer(/([.!?] )([a-z])/g, function(match, punc, word) {
-			 /*
-			 for (var ii=0; ii<arguments.length; ii++) {
-			     console.log("args " + ii + " --> " + "'" + arguments[ii] + "'");
-			 }
-			 */
-			 
 			 return punc + word.toUpperCase()}),
-		     new Replacer(/\bhra\b/g, 'a'))); //<== TODO
-
-
+		     new Replacer(/([.!?] )([A-Z])/g, function(match, punc, word) {
+			 return punc + word.toLowerCase()})));
 
 	// 4. "e" or "E" is replaced by "rr"
 	this.translator.addRule(
@@ -56,10 +47,24 @@ define(['ZombieTranslator', 'Rule', 'Replacer'], function(ZombieTranslator, Rule
 	    new Rule('rule #8, "r" or "R" is replaced by "RR"',
 		     new Replacer(/r/ig, 'RR'), new Replacer(/RR/g, 'r')));
 
+	// 9. "1" is replaced by "2"
+	this.translator.addRule(
+	    new Rule('rule #9, "1" is replaced by "2"',
+		     new Replacer(/1/g, '2'), new Replacer(/2/g, '1')));
+
+	// 10. "2" is replaced by "1"
+	this.translator.addRule(
+	    new Rule('rule #10, "2" is replaced by "1"',
+		     new Replacer(/2/g, '1'), new Replacer(/1/g, '2')));
+	
     };
 
     TenRulesZombieTranslator.prototype.zombify = function(text) {
 	return this.translator.zombify(text);
+    };
+
+    TenRulesZombieTranslator.prototype.unzombify = function(text) {
+	return this.translator.unzombify(text);
     };
 
     return TenRulesZombieTranslator;

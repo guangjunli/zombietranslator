@@ -1,6 +1,5 @@
 define(['Replacer', 'Rule', 'TenRulesZombieTranslator'], function(Replacer, Rule, TenRulesZombieTranslator) {
-    describe("10 Rules Zombie Translator", function() {
-	//ZombieTranslator translator;
+    describe("Zombie translator configured with 10 rules - my own tests", function() {
 	var translator;
 	beforeEach(function() {
 	    translator = new TenRulesZombieTranslator();
@@ -9,6 +8,7 @@ define(['Replacer', 'Rule', 'TenRulesZombieTranslator'], function(Replacer, Rule
 
 	it('should replace lower-case "r" at the end of words with "rh"', function() {
 	    expect(translator.zombify('better')).toEqual('brrttrrrh');
+	    expect(translator.unzombify(translator.zombify('better'))).toMatch('better');
 	});
 
 	it('should replace an "a" or "A" by itself with "hra"', function() {
@@ -16,23 +16,27 @@ define(['Replacer', 'Rule', 'TenRulesZombieTranslator'], function(Replacer, Rule
 	});
 
 
-	xit('should capitalize starts of sentences', function() {
-	    expect(translator.zombify('first. second. Third')).toEqual('first. Srrcond. Third');//TODO f-->F
+	it('should capitalize starts of sentences', function() {
+	    expect(translator.zombify('first. second. Third')).toEqual('frrRrRRst. SrrcrrrRrnd. ThrrRrRRd');
 	});
 
 	it('should capitalize starts of sentences', function() {
-	    expect(translator.zombify('first. second. Third? fourth')).toEqual('frrRrRRst. SrrcrrrRrnd. ThrrRrRRd? FrrrRrrrrrRrRRth');//TODO f-->F
+	    expect(translator.zombify('first. second. Third? fourth')).toEqual('frrRrRRst. SrrcrrrRrnd. ThrrRrRRd? FrrrRrrrrrRrRRth');
 	});
 
-	it('should replace e or E with rr', function() {
-	    expect(translator.zombify('Elephant')).toEqual('rrlrrphhrant');
+	it('should replace 123 with 213', function() {
+	    expect(translator.zombify('123')).toEqual('213');
 	});
 
+	it('round trip should match original text ignoring case', function() {
+	    expect(translator.unzombify(translator.zombify('bEtter'))).toMatch(/better/i);
+	    expect(translator.unzombify(translator.zombify('Abcedf ;, e a, 31334321'))).toMatch(/Abcedf ;, e a, 31334321/i);
+	});
+	
     });
 
 
-    describe("10 Rules Zombie Translator - sample tests", function() {
-	//ZombieTranslator translator;
+    describe("Zombie translator configured with 10 rules - tests from assignment spec", function() {
 	var translator;
 	beforeEach(function() {
 	    translator = new TenRulesZombieTranslator();
@@ -41,30 +45,30 @@ define(['Replacer', 'Rule', 'TenRulesZombieTranslator'], function(Replacer, Rule
 
 	it('Terror -> TrrRRRRrrrRrrh', function() {
 	    expect(translator.zombify('Terror')).toEqual('TrrRRRRrrrRrrh');
+	    //this is a demo of the imperfection of the rules: r->rh is applied in the unzombify
+	    //process while it was never applied with the zombify process
+	    expect(translator.unzombify(translator.zombify('Terror'))).not.toMatch(/Terror/i);
 	});
 
         it('JaZahn -> JhraZhrahn', function() {
 	    expect(translator.zombify('JaZahn')).toEqual('JhraZhrahn');
+	    expect(translator.unzombify(translator.zombify('JaZahn'))).toMatch(/JaZahn/i);
 	});
 
         it('petty -> prrtty', function() {
 	    expect(translator.zombify('petty')).toEqual('prrtty');
+	    expect(translator.unzombify(translator.zombify('petty'))).toMatch(/petty/i);
 	});
 
         it('pretty -> pRRrrtty', function() {
 	    expect(translator.zombify('pretty')).toEqual('pRRrrtty');
+	    expect(translator.unzombify(translator.zombify('pretty'))).toMatch(/pretty/i);
 	});
         it('brains -> bRRhrarrRrns', function() {
 	    expect(translator.zombify('brains')).toEqual('bRRhrarrRrns');
-	});
-
-
-	it('f. second', function() {
-	    expect(translator.zombify('f. second? t')).toEqual('f. SrrcrrrRrnd? T');
-	});
-
-        it('r by itself', function() {
-	    expect(translator.zombify('r')).toEqual('rh');
+	    //this is a demo of the imperfection of the rules: e->rr is applied in the unzombify
+	    //process while it was never applied with the zombify process
+	    expect(translator.unzombify(translator.zombify('brains'))).not.toMatch(/brains/i);
 	});
     });
 

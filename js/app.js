@@ -19,6 +19,9 @@ requirejs(['jquery', 'TenRulesZombieTranslator'], function($, TenRulesZombieTran
 	    $('#zombie').val(tenRulesZombieTranslator.zombify($('#english').val()));
 	});
 
+	$('#zombie').on("keyup", function() {
+	    $('#english').val(tenRulesZombieTranslator.unzombify($('#zombie').val()));
+	});
     });
 
 });
