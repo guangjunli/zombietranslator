@@ -5,16 +5,18 @@ The translator can be done as a series of regular expressions (Links to an exter
 
 ## The Rules
 
-There are some sample rules contained in the skeleton source code and are as follows:
+These are the rules implemented:
 
-lower-case "r" at the end of words replaced with "rh".
-an "a" or "A" by itself will be replaced with "hra".
-the starts of sentences are capitalized (the "start of a sentence" is any occurrence of ".!?", followed by a space, followed by a letter.)
-"e" or "E" is replaced by "rr"
-"i" or "I" is replaced by "rrRr"
-"o" or "O" is replaced by "rrrRr"
-"u" or "U" is replaced by "rrrrRr"
-"r" or "R" is replaced by "RR"
+\#1 lower-case "r" at the end of words replaced with "rh".
+\#2 an "a" or "A" will be replaced with "hra".
+\#3the starts of sentences are capitalized (the "start of a sentence" is any occurrence of ".!?", followed by a space, followed by a letter.)
+\#4 "e" or "E" is replaced by "rr"
+\#5 "i" or "I" is replaced by "rrRr"
+\#6 "o" or "O" is replaced by "rrrRr"
+\#7 "u" or "U" is replaced by "rrrrRr"
+\#8 "r" or "R" is replaced by "RR"
+\#9 "1" is replaced by "2"
+\#10 "2" is replaced by "1"
  
 *There should be 10 rules total. So make 2 rules up. Each rule should be a separate function. Edited out. Unnecessary*
 
@@ -27,10 +29,42 @@ expect(undefinedVariable).toBeUndefined();
 expect('30').toContain('0');
 expect(callback).not.toHaveBeenCalledWith(jasmine.stringMatching(/^bar$/));
 ```
- 
+
+### The Jasmine expects used throughout the tests are:
+#### toBe
+#### toEqual
+#### toMatch
+#### toThrow
+#### not
+
+
 What really matters is the structure. The last thing the resistance needs is for zombies to write false translators to trick us. We need to make sure a human, professional developer created the zombie translator. We all know zombies don't know how to write modular code, and they never test. 
 
 Each of the rules needs to be modular enough to test separately. There should also be a test for the entire function. 
+
+## Structure of the Program
+
+The program functionality is built gradually on these modules:
+#### Replacer
+#### Rule
+#### ZombieTranslator
+#### TenRulesZombieTranslator
+
+The Jasmine tests are also organized around the above modules. Each rule is tested individually with configuring ZombieTranslator with that rule, while the aggregate of the rules are tested against TenRulesZombieTranslator.
+
+## Using the translator
+
+In browser, open index.html, while English text is being typed into the "English" box, Zombie text will be dynamically translated in the "Zombie" box.
+
+On the other hand, if text is typed in the "Zombie" box, then its English translation is dynamically displayed in the "English" box.
+
+## Running the tests with Jasmine in browser
+
+Open js/tests/SpecRunner.html in browser.
+
+## Rnning the tests with Karma
+
+Run ```./node_modules/karma/bin/karma start``` at the root of the project directory.
 
 ## Starting point
 
