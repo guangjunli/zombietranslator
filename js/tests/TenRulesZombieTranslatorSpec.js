@@ -70,6 +70,12 @@ define(['Replacer', 'Rule', 'TenRulesZombieTranslator'], function(Replacer, Rule
 	    //process while it was never applied with the zombify process
 	    expect(translator.unzombify(translator.zombify('brains'))).not.toMatch(/brains/i);
 	});
+
+        it('onomatopoeia  -> rrrRrnrrrRrmhratrrrRrprrrRrrrrrRrhra', function() {
+	    expect(translator.zombify('onomatopoeia')).toEqual('rrrRrnrrrRrmhratrrrRrprrrRrrrrrRrhra');
+	    expect(translator.unzombify(translator.zombify('onomatopoeia'))).not.toMatch(/onomatopoeia/i);
+	});
+
     });
 
 });
